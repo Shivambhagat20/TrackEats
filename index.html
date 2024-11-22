@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Website</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      .top-bar {
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #ddd;
+      }
+
+      .number-input {
+        display: flex;
+        align-items: center;
+        width: 120px;
+      }
+
+      .number-input-column {
+        display: flex;
+        flex-direction: column;
+        height: 60px;
+      }
+
+      .number-input input {
+        width: 80px;
+        text-align: center;
+        font-size: 1.2rem;
+        padding: 0.2rem;
+      }
+
+      .number-input p {
+        height: 14px;
+        text-align: center;
+        font-size: 12px;
+        margin: 3px;
+      }
+
+      .number-input button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 0.2rem;
+        width: 30px;
+      }
+
+      .arrow-up::after {
+        content: '▲';
+      }
+      .arrow-down::after {
+        content: '▼';
+      }
+
+      .search-bar {
+        display: flex;
+        width: 500px;
+        height: 30px;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .search-bar input {
+        width: 90%;
+        padding: 5px;
+        font-size: 1rem;
+      }
+
+      .hamburger-menu {
+        background: none;
+        border: 1px solid black;
+        border-radius: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 7px 5px;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+      }
+
+      .hamburger-menu-bar {
+        width: 100%;
+        height: 2px;
+        background-color: #333;
+        border-radius: 2px;
+      }
+
+      .profile-button {
+        background: none;
+        border: 1px solid black;
+        cursor: pointer;
+        border-radius: 5px;
+        padding: 5px 10px;
+      }
+
+      .restaurant-section {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        padding: 1rem;
+        gap: 1rem;
+      }
+
+      .restaurant {
+        flex: 1 1 calc(25% - 2rem); /* Responsive grid: 4 items per row */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 200px;
+        background: #f0f0f0;
+        border-radius: 10px;
+        padding: 1rem;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .restaurant:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .restaurant img {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 10px;
+        object-fit: contain;
+        border-radius: 50%;
+        border: 2px solid #ddd;
+      }
+
+      .restaurant p {
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .scroll-list {
+        display: flex;
+        overflow-x: auto;
+        padding: 20px;
+        gap: 1rem;
+        scroll-behavior: smooth;
+        white-space: nowrap;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+      }
+
+      .scroll-list::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, and Edge */
+      }
+
+      .item {
+        flex: 1 1 calc(25% - 2rem); /* Responsive grid */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 300px;
+        background: #f0f0f0;
+        border-radius: 10px;
+        padding: 1rem;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        flex-shrink: 0;
+      }
+
+      .item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .item img {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 10px;
+        object-fit: contain;
+        border-radius: 50%;
+        border: 2px solid #ddd;
+      }
+
+      .item p {
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: center;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="number-input">
+        <div class="number-input-column">
+          <button class="arrow-up" onclick="incrementCalorieInput()"></button>
+          <button class="arrow-down" onclick="decrementCalorieInput()"></button>
+        </div>
+        <div class="number-input-column">
+          <p>CALORIES</p>
+          <input type="number" id="calorieInput" value="500" step="10" />
+        </div>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="searchBar" placeholder="Search" />
+        <button class="hamburger-menu" aria-label="Open menu" onclick="openPreferences()">
+          <span class="hamburger-menu-bar"></span>
+          <span class="hamburger-menu-bar"></span>
+          <span class="hamburger-menu-bar"></span>
+        </button>
+      </div>
+      <div>
+        <button class="profile-button" onclick="openProfile()">Profile</button>
+      </div>
+    </div>
+
+    <!-- Restaurants Section -->
+    <section class="restaurant-section">
+      <div class="restaurant" onclick="goToRestaurant('McDonalds')">
+        <img src="https://1000logos.net/wp-content/uploads/2017/03/McDonalds-logo.png" alt="McDonald's Logo" />
+        <p>McDonald's</p>
+      </div>
+      <div class="restaurant" onclick="goToRestaurant('BurgerKing')">
+        <img src="https://1000logos.net/wp-content/uploads/2017/03/Burger-King-Logo.png" alt="Burger King Logo" />
+        <p>Burger King</p>
+      </div>
+      <div class="restaurant" onclick="goToRestaurant('Subway')">
+        <img src="https://1000logos.net/wp-content/uploads/2017/03/Subway-logo.png" alt="Subway Logo" />
+        <p>Subway</p>
+      </div>
+      <div class="restaurant" onclick="goToRestaurant('KFC')">
+        <img src="https://1000logos.net/wp-content/uploads/2017/03/KFC-logo.png" alt="KFC Logo" />
+        <p>KFC</p>
+      </div>
+    </section>
+
+    <!-- Scrollable Items Section -->
+    <section>
+      <div class="scroll-list">
+        <div class="item">
+          <img src="https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg" alt="Pizza" />
+          <p>Pizza</p>
+        </div>
+        <div class="item">
+          <img src="https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg" alt="Burger" />
+          <p>Burger</p>
+        </div>
+        <div class="item">
+          <img src="https://images.pexels.com/photos/2232/pexels-photo.jpg" alt="Pasta" />
+          <p>Pasta</p>
+        </div>
+        <div class="item">
+          <img src="https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg" alt="Sushi" />
+          <p>Sushi</p>
+        </div>
+        <div class="item">
+          <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg" alt="Salad" />
+          <p>Salad</p>
+        </div>
+        <div class="item">
+          <img src="https://images.pexels.com/photos/162802/pexels-photo-162802.jpeg" alt="Ice Cream" />
+          <p>Ice Cream</p>
+        </div>
+        <div class="item">
+          <img src="https://images.pexels.com/photos/1140721/pexels-photo-1140721.jpeg" alt="Fries" />
+          <p>Fries</p>
+        </div>
+        <div class="item">
+          <img src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg" alt="Tacos" />
+          <p>Tacos</p>
+        </div>
+        <div class="item">
+          <img src="https://images.pexels.com/photos/133578/pexels-photo-133578.jpeg" alt="Sandwich" />
+          <p>Sandwich</p>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      function incrementCalorieInput() {
+        const input = document.getElementById("calorieInput");
+        input.value = parseInt(input.value) + parseInt(input.step);
+      }
+
+      function decrementCalorieInput() {
+        const input = document.getElementById("calorieInput");
+        input.value = parseInt(input.value) - parseInt(input.step);
+      }
+
+      function openPreferences() {
+        console.log("Preferences clicked");
+      }
+
+      function openProfile() {
+        console.log("Profile clicked");
+      }
+
+      function goToRestaurant(name) {
+        alert(`Navigating to ${name}`);
+      }
+
+      const scrollList = document.querySelector('.scroll-list');
+let scrollInterval;
+
+scrollList.addEventListener('mousemove', (event) => {
+  const { left, right } = scrollList.getBoundingClientRect();
+  const mouseX = event.clientX;
+
+  if (mouseX < left + 50) {
+    // Hovering near the left edge
+    startScrolling(-5); // Scroll left
+  } else if (mouseX > right - 50) {
+    // Hovering near the right edge
+    startScrolling(5); // Scroll right
+  } else {
+    stopScrolling();
+  }
+});
+
+scrollList.addEventListener('mouseleave', stopScrolling);
+
+function startScrolling(speed) {
+  if (!scrollInterval) {
+    scrollInterval = setInterval(() => {
+      scrollList.scrollBy(speed * 10, 0); // scroll speed
+    }, 16); // Smooth scrolling
+  }
+}
+
+
+function stopScrolling() {
+  if (scrollInterval) {
+    clearInterval(scrollInterval);
+    scrollInterval = null;
+  }
+}
+
+    </script>
+  </body>
+</html>
